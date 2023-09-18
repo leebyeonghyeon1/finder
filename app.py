@@ -24,9 +24,17 @@ file_handler.setLevel(logging.DEBUG)
 stream_handler = logging.StreamHandler()
 stream_handler.setLevel(logging.DEBUG)
 
+# 로깅 포맷 설정
+log_format = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+
+# 파일 핸들러와 스트림 핸들러에 로깅 포맷을 적용
+file_handler.setFormatter(log_format)
+stream_handler.setFormatter(log_format)
+
 # 핸들러를 로거에 추가
 logger.addHandler(file_handler)
 logger.addHandler(stream_handler)
+
 
 # 루트 경로 ("/")에 대한 라우트 추가
 @app.route("/")
