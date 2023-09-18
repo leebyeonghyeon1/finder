@@ -3,6 +3,19 @@ from flask import Flask, request, jsonify, send_from_directory, url_for
 import os
 import logging
 import send_message
+from werkzeug.serving import WSGIRequestHandler
+import datetime
+
+class CustomRequestHandler(WSGIRequestHandler):
+    def log_request(self, code='-', size='-'):
+        current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        self.log('info', 'Client %s - - [%s] "%s %s %s" %s %s',
+                 self.client_address[0],
+                 current_time,
+                 self.command, self.path, self.request_version,
+                 code, size)
+
+WSGIRequestHandler.log_request = CustomRequestHandler.log_request
 
 app = Flask(
     __name__,
@@ -11,6 +24,8 @@ app = Flask(
 )
 
 log_file_path = os.path.join(os.getcwd(), "app.log")
+
+
 
 # 로거 객체 생성
 logger = logging.getLogger()
