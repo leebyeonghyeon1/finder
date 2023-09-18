@@ -33,10 +33,10 @@ def  start_AI(query):
 
             # OpenCV로 이미지 로드
             image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-            print(type(image))
+            
             # 이미지를 저장하거나 다른 작업 수행
             cv2.imwrite('/home/centos/prj/images/DB_image.jpg', image)  
-            AI_model(query)
+            # AI_model(query)
             
     except Exception as e:
         print("Error:", str(e))
@@ -50,7 +50,7 @@ def  start_AI(query):
 def AI_model(query):
     model = YOLO("3000love.pt")
 
-    image_path = r"/home/centos/prj/images/DB_image.jpg"
+    image_path = "/home/centos/prj/images/DB_image.jpg"
     img = cv2.imread(image_path)
     results = model([image_path])
 

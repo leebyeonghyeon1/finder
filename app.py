@@ -10,8 +10,22 @@ app = Flask(
 )
 
 log_file_path = os.path.join(os.getcwd(), "app.log")
-logging.basicConfig(filename=log_file_path, level=logging.DEBUG)
 
+# 로거 객체 생성
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
+# 파일 핸들러 설정
+file_handler = logging.FileHandler(log_file_path)
+file_handler.setLevel(logging.DEBUG)
+
+# 스트림 핸들러 설정 (터미널에 출력하기 위함)
+stream_handler = logging.StreamHandler()
+stream_handler.setLevel(logging.DEBUG)
+
+# 핸들러를 로거에 추가
+logger.addHandler(file_handler)
+logger.addHandler(stream_handler)
 
 # 루트 경로 ("/")에 대한 라우트 추가
 @app.route("/")
@@ -22,6 +36,10 @@ def home():
 @app.route("/images/<filename>")
 def send_image(filename):
     return send_from_directory("images", filename)
+
+@app.route('/output_img/<filename>')
+def output_image(filename):
+    return send_from_directory('output_img', filename)
 
 
 # 오브젝트 검색 함수
@@ -62,26 +80,27 @@ word_mapping = {
 
 }
 
-#send_message.py를 구동시키고, 쿼리를 보내는 함수
-#def sendmessage(query):
-#    return send_message.start_AI(query)
 @app.route('/process_image', methods=['POST'])
 def process_image():
-    # 사용자로부터 전달받은 물품명
-    item_name = request.json['item_name']
+    try:
+        # 사용자로부터 전달받은 물품명
+        data = request.get_json()
+        item_name = data.get('item_name')
 
-    # 전달받은 물품명을 영어로 변경
-    ## item_name = word_mapping()
-    # ^word_mapping은 함수가 아닙니다...
-    item_name = word_mapping.get(item_name, item_name)
+        # 전달받은 물품명을 영어로 변경
+        item_name = word_mapping.get(item_name, "Unknown_Item")
 
-    # 함수를 사용하여 이미지 처리
-    send_message.start_AI(item_name)
+        # sendmessage 함수를 사용하여 이미지 처리
+        send_message.start_AI(item_name)
 
-    # 처리된 이미지의 URL을 반환합니다.
-    image_url = url_for('static', filename='output.jpg')
-    return jsonify({"image_url": image_url})
-
+        # 처리된 이미지의 URL을 반환합니다.
+        image_url = url_for('output_image', filename='output.jpg')
+        app.logger.info(f"Image processed successfully, URL: {image_url}")
+        return jsonify({"image_url": image_url})
+    
+    except Exception as e:
+        app.logger.error(f"Error processing image: {str(e)}")
+        return jsonify({"error": "An error occurred while processing the image."}), 500
 
 
 # 현재 작업 디렉토리 내의 'static' 폴더의 경로를 가져옵니다.

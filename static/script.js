@@ -28,11 +28,10 @@ function searchObject(query) {
   fetch(`/search?query=${query}`)
     .then((response) => response.json())
     .then((data) => {
-	  const searchArea = document.getElementById("search-image-area");
-	  searchArea.innerHTmL = "";
+      const searchArea = document.getElementById("search-image-area");
+      searchArea.innerHTmL = "";
       const resultArea = document.getElementById("result-area");
       resultArea.innerHTML = "";
-	  
 
       if (data.success && data.results.length > 0) {
         data.results.forEach((result) => {
@@ -41,8 +40,8 @@ function searchObject(query) {
           imgElement.alt = result.name;
           imgElement.style.maxWidth = "20%";
           imgElement.style.padding = "10px";
-		  
-		  searchArea.appendChild(imgElement);
+
+          searchArea.appendChild(imgElement);
 
           // 이미지 클릭 시 resultArea에 outputImageElement 표시
           imgElement.addEventListener("click", function () {
@@ -59,11 +58,10 @@ function searchObject(query) {
                 // 반환된 이미지 URL을 사용하여 웹 페이지에 이미지를 표시합니다.
                 const outputImageElement = document.createElement("img");
                 outputImageElement.src = data.image_url;
+                outputImageElement.alt = data.name;
                 resultArea.appendChild(outputImageElement);
               });
           });
-
-          
         });
       } else {
         document.getElementById("status-message").textContent =
@@ -71,4 +69,3 @@ function searchObject(query) {
       }
     });
 }
-
