@@ -36,7 +36,7 @@ def  start_AI(query):
             
             # 이미지를 저장하거나 다른 작업 수행
             cv2.imwrite('/home/centos/prj/images/DB_image.jpg', image)  
-            # AI_model(query)
+            AI_model(query)
             
     except Exception as e:
         print("Error:", str(e))
