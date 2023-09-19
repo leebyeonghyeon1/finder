@@ -1,5 +1,5 @@
-#seonghan
 from flask import Flask, request, jsonify, send_from_directory, url_for
+from urllib.parse import unquote
 import os
 import logging
 import send_message
@@ -109,10 +109,18 @@ def process_image():
     try:
         # 사용자로부터 전달받은 물품명
         data = request.get_json()
-        item_name = data.get('item_name')
+        item_name_encoded = data.get('item_name')
+        print(f"인코딩: {item_name_encoded}")
+
+
+        # URL 인코딩된 문자열 디코딩
+        item_name = unquote(item_name_encoded)
+        print(f"디코딩: {item_name}")
 
         # 전달받은 물품명을 영어로 변경
         item_name = word_mapping.get(item_name, "Unknown_Item")
+        print(f"영문명: {item_name}")
+        
 
         # sendmessage 함수를 사용하여 이미지 처리
         send_message.start_AI(item_name)

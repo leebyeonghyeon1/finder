@@ -45,20 +45,24 @@ function searchObject(query) {
 
           // 이미지 클릭 시 resultArea에 outputImageElement 표시
           imgElement.addEventListener("click", function () {
+            // 이미지의 파일 이름에서 확장자를 제거하고 그 결과를 item_name으로 사용합니다.
+            let itemName = this.src.split("/").pop().split(".")[0];
+
             // 서버에 AJAX 요청을 보냅니다.
             fetch("/process_image", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ item_name: result.name }),
+              body: JSON.stringify({ item_name: itemName }),
             })
               .then((response) => response.json())
               .then((data) => {
                 // 반환된 이미지 URL을 사용하여 웹 페이지에 이미지를 표시합니다.
                 const outputImageElement = document.createElement("img");
                 outputImageElement.src = data.image_url;
-                outputImageElement.alt = data.name;
+                outputImageElement.alt = itemName; // alt 속성에도 item_name 값을 사용합니다.
+                outputImageElement.style.maxWidth = "80%";
                 resultArea.appendChild(outputImageElement);
               });
           });

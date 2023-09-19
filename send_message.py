@@ -4,7 +4,7 @@ import numpy as np
 import cv2
 from ultralytics import YOLO
 
-def  start_AI(query): 
+def  start_AI(search_query): 
 # MySQL 연결 설정
     db_config = {
         'host': '3.36.232.50',
@@ -36,7 +36,7 @@ def  start_AI(query):
             
             # 이미지를 저장하거나 다른 작업 수행
             cv2.imwrite('/home/centos/prj/images/DB_image.jpg', image)  
-            AI_model(query)
+            AI_model(search_query)
             
     except Exception as e:
         print("Error:", str(e))
@@ -48,14 +48,16 @@ def  start_AI(query):
 
 
 def AI_model(query):
+    print("나만알쥐"+query)
     model = YOLO("3000love.pt")
-
+    # image_path = "/home/centos/prj/static/진라면컵.jpg"
     image_path = "/home/centos/prj/images/DB_image.jpg"
     img = cv2.imread(image_path)
     results = model([image_path])
 
     desired_classes = [query]
-
+    print("나만알쥐"+query)
+ 
     for result in results:
         boxes = result.boxes.xyxy.numpy()
         classes = result.boxes.cls.numpy()
@@ -70,8 +72,9 @@ def AI_model(query):
                 x1 = orig_shape_x - x1
                 x2 = orig_shape_x - x2
                 print(y1, x1, y2, x2)
-                cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 15)
+                cv2.rectangle(img, (y1, x1), (y2, x2), (0, 255, 0), 15)
                 # cv2.putText(img, class_name, (x1, y1-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2) # 텍스트 출력 관련 문장
-
+            
 
     cv2.imwrite('/home/centos/prj/output_img/output.jpg', img)
+    
