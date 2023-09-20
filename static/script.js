@@ -38,7 +38,7 @@ function searchObject(query) {
           const imgElement = document.createElement("img");
           imgElement.src = result.image;
           imgElement.alt = result.name;
-          imgElement.style.maxWidth = "20%";
+          imgElement.style.maxWidth = "30%";
           imgElement.style.padding = "10px";
 
           searchArea.appendChild(imgElement);
@@ -62,7 +62,7 @@ function searchObject(query) {
                 const outputImageElement = document.createElement("img");
                 outputImageElement.src = data.image_url;
                 outputImageElement.alt = itemName; // alt 속성에도 item_name 값을 사용합니다.
-                outputImageElement.style.maxWidth = "80%";
+                outputImageElement.style.maxWidth = "70%";
                 resultArea.appendChild(outputImageElement);
               });
           });

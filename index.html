@@ -1,53 +1,48 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Finder</title>
-	<link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/static/styles.css" />
-    <script src="/static/script.js" defer></script>
-    
-  </head>
-  <body>
-    <div class="container my-5">
-      <h1 class="text-center mb-3"><a href="/" id="home-link">Finder</a></h1>
-      
-      <div id="top-bar"> <!-- @상단바 -->
-        <input
-          type="text"
-          class="form-control mb-3"
-          id="search-box"
-          placeholder="찾고 싶은 오브젝트를 입력하세요. (ex. 신라면)"
-        />
-        <button class="btn btn-secondary" id="all-btn">모든 상품 목록 보기</button> <!--! 나중에 새 창으로 목록 보이게하기-->
-        <button class="btn btn-primary" id="search-btn">검색</button><br>
-        <div class="text-danger mt-2" id="status-message">
-          <!--상태 메세지-->
-        </div>
-      </div>
 
-      <div class="border p-5" id="search-image-area">
-        <!-- 검색에 따른 오브젝트 이미지를 표시 -->
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finder</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/static/styles.css" />
+  <script src="/static/script.js" defer></script>
+
+</head>
+
+<body>
+  <div class="container my-5">
+    <h1 class="text-center mb-3"><a href="/" id="home-link">Finder</a></h1>
+
+    <div id="top-bar"> <!-- @상단바 -->
+      <input type="text" class="form-control mb-3" id="search-box" placeholder="찾고 싶은 오브젝트를 입력하세요. (ex. 신라면)" />
+      <button class="btn btn-secondary" id="all-btn">모든 상품 목록 보기</button> <!--! 나중에 새 창으로 목록 보이게하기-->
+      <button class="btn btn-primary" id="search-btn">검색</button><br>
+      <div class="text-danger mt-2" id="status-message">
+        <!--상태 메세지-->
       </div>
-      <fieldset> <!--todo 평상시엔 안 보일 필요 있다.-->
+    </div>
+
+    <div class="border p-5" id="search-image-area">
+      <!-- 검색에 따른 오브젝트 이미지를 표시 -->
+    </div>
+    <fieldset> <!--todo 평상시엔 안 보일 필요 있다.-->
       <legend>검색 결과</legend>
       <div class="border p-5" id="result-area">
         <!-- 검색결과 output Img. 표시 -->
       </div>
-      </fieldset>
-      <footer>
-        <div class="text-right mt-3 text-muted"><b>AISL</b> <i>team FNDR</i></div>
-      </footer>
+    </fieldset>
+    <footer>
+      <div class="text-right mt-3 text-muted"><b>AISL</b> <i>team FNDR</i></div>
+    </footer>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js">
-	</script>
+    </script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js">
-	</script>
-  </body>
+    </script>
+</body>
+
 </html>

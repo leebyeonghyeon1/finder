@@ -1,5 +1,5 @@
 .container {
-  width: 70%;  /* 너비를 70%로 줄임 */
+  width: 80%;  /* 너비를 70%로 줄임 */
   max-width: 1200px;  /* 최대 너비 설정 */
   margin: auto;
   padding: 20px;
@@ -7,7 +7,7 @@
 
 .title {
   font-family: "Playfair Display", serif;
-  font-size: 40px;
+  font-size: 60px;
   margin-bottom: 30px;
 }
 
@@ -17,8 +17,9 @@
 }
 
 #search-box {
-  margin-top: 30px;
+  margin-top: 20px;
 }
+
 
 #search-btn {
   cursor: pointer;
@@ -53,3 +54,4 @@ footer {
 .result-info img {
   max-width: 30%;
 }
+
