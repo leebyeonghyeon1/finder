@@ -1,3 +1,5 @@
+import { searchObject } from "./search.js";
+
 // @ top-bar 상단바
 document.getElementById("search-btn").addEventListener("click", function () {
   var query = document.getElementById("search-box").value;
@@ -21,55 +23,66 @@ document.getElementById("search-box").addEventListener("keydown", function (e) {
   }
 }); //: 검색창에서 엔터를 눌렀을 때
 
-// ~ 사용자가 입력한 검색어로 오브젝트를 검색
-function searchObject(query) {
-  document.getElementById("status-message").textContent = "검색 중...";
+document.getElementById('all-btn').addEventListener('click', function () {
+  // Clear the search-image-area
+  const searchArea = document.getElementById('search-img-area');
+  searchArea.innerHTML = '';
 
-  fetch(`/search?query=${query}`)
-    .then((response) => response.json())
-    .then((data) => {
-      const searchArea = document.getElementById("search-image-area");
-      searchArea.innerHTmL = "";
-      const resultArea = document.getElementById("result-area");
-      resultArea.innerHTML = "";
-
-      if (data.success && data.results.length > 0) {
-        data.results.forEach((result) => {
-          const imgElement = document.createElement("img");
-          imgElement.src = result.image;
-          imgElement.alt = result.name;
-          imgElement.style.maxWidth = "30%";
-          imgElement.style.padding = "10px";
-
+  // Fetch all images from the static folder (assuming server returns an array of image filenames)
+  fetch('/get_all_images')
+    .then(response => response.json())
+    .then(data => {
+      data.forEach(image => {
+        if (image.endsWith('.jpg')) { // Only include .jpg files
+          const imgElement = document.createElement('img');
+          imgElement.src = `/static/${image}`;
+          imgElement.style.maxWidth = '45%';
+          imgElement.style.padding = '10px';
           searchArea.appendChild(imgElement);
 
-          // 이미지 클릭 시 resultArea에 outputImageElement 표시
+          // Attach click event listener to each image
           imgElement.addEventListener("click", function () {
-            // 이미지의 파일 이름에서 확장자를 제거하고 그 결과를 item_name으로 사용합니다.
-            let itemName = this.src.split("/").pop().split(".")[0];
-
-            // 서버에 AJAX 요청을 보냅니다.
-            fetch("/process_image", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ item_name: itemName }),
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                // 반환된 이미지 URL을 사용하여 웹 페이지에 이미지를 표시합니다.
-                const outputImageElement = document.createElement("img");
-                outputImageElement.src = data.image_url;
-                outputImageElement.alt = itemName; // alt 속성에도 item_name 값을 사용합니다.
-                outputImageElement.style.maxWidth = "70%";
-                resultArea.appendChild(outputImageElement);
-              });
+            processImageClick(this, searchArea);
           });
-        });
-      } else {
-        document.getElementById("status-message").textContent =
-          "결과를 찾을 수 없습니다.";
-      }
+        }
+      });
+    });
+});
+
+function processImageClick(clickedImage, searchArea) {
+  document.getElementById("status-message").textContent = "검색 중...";
+  let itemName = clickedImage.src.split("/").pop().split(".")[0]; // Extract item name from image filename
+
+  // Remove all images except the clicked one
+  Array.from(searchArea.children).forEach((img) => {
+    if (img !== clickedImage) {
+      searchArea.removeChild(img);
+    }
+  });
+
+  // Send AJAX request to the server
+  fetch("/process_image", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ item_name: itemName }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      document.getElementById("status-message").textContent = "검색 완료";
+
+      const resultArea = document.getElementById("result-img-area");
+      const resImgElm = document.createElement("img");
+      resImgElm.src = data.image_url;
+      resImgElm.alt = itemName;
+      resImgElm.style.maxWidth = "90%";
+      resImgElm.style.padding = "10px";
+
+      // Clear previous result images
+      resultArea.innerHTML = "";
+
+      // Append the new result image
+      resultArea.appendChild(resImgElm);
     });
 }

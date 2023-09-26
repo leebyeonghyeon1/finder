@@ -2,9 +2,12 @@ from flask import Flask, request, jsonify, send_from_directory, url_for
 from urllib.parse import unquote
 import os
 import logging
-import send_message
 from werkzeug.serving import WSGIRequestHandler
 import datetime
+
+#user module
+import send_message
+
 
 class CustomRequestHandler(WSGIRequestHandler):
     def log_request(self, code='-', size='-'):
@@ -89,6 +92,15 @@ def search():
     # 검색 결과를 JSON 형식으로 반환합니다.
     return jsonify(success=True, results=results)
 
+
+
+@app.route("/get_all_images", methods=["GET"])
+def get_all_images():
+    image_folder = os.path.join(os.getcwd(), 'static')  # static 폴더의 절대 경로
+    image_files = [f for f in os.listdir(image_folder) if f.endswith('.jpg')]  # .jpg 파일만 선택
+    return jsonify(image_files)
+
+
 # 쿼리 번역 딕셔너리
 word_mapping = {
     "신라면 컵" : "Shin Ramyun -cup- 65g",
@@ -101,8 +113,8 @@ word_mapping = {
     "참깨라면 컵" : "Chamggae Ramen -cup- 65g",
     "안성탕면 팩" : "Anseongtangmyeon -cup- 125g",
     "짜파게티 컵" : "Chapagetti -cup- 123g"
-
 }
+
 
 @app.route('/process_image', methods=['POST'])
 def process_image():

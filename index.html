@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ko">
 
 <head>
@@ -9,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/static/styles.css" />
-  <script src="/static/script.js" defer></script>
+  <script defer type="module" src="/static/script.js"></script>
 
 </head>
 
@@ -18,20 +19,24 @@
     <h1 class="text-center mb-3"><a href="/" id="home-link">Finder</a></h1>
 
     <div id="top-bar"> <!-- @상단바 -->
-      <input type="text" class="form-control mb-3" id="search-box" placeholder="찾고 싶은 오브젝트를 입력하세요. (ex. 신라면)" />
+      <input type="text" class="form-control mb-3" id="search-box" placeholder="찾고 싶은 물품을 입력하세요. (ex. 진라면)" />
+
       <button class="btn btn-secondary" id="all-btn">모든 상품 목록 보기</button> <!--! 나중에 새 창으로 목록 보이게하기-->
+
       <button class="btn btn-primary" id="search-btn">검색</button><br>
+
       <div class="text-danger mt-2" id="status-message">
         <!--상태 메세지-->
       </div>
     </div>
 
-    <div class="border p-5" id="search-image-area">
+    <div class="border p-5" id="search-img-area">
       <!-- 검색에 따른 오브젝트 이미지를 표시 -->
     </div>
+
     <fieldset> <!--todo 평상시엔 안 보일 필요 있다.-->
       <legend>검색 결과</legend>
-      <div class="border p-5" id="result-area">
+      <div class="border p-2" id="result-img-area">
         <!-- 검색결과 output Img. 표시 -->
       </div>
     </fieldset>

@@ -1,57 +1,65 @@
+/* 기본 스타일 (모바일 환경) */
 .container {
-  width: 80%;  /* 너비를 70%로 줄임 */
-  max-width: 1200px;  /* 최대 너비 설정 */
+  width: 95%;
+  max-width: none;
   margin: auto;
-  padding: 20px;
+  padding: 5px;
 }
 
-.title {
+#search-img-area {
+  min-width: 50%;
+  max-width: 90%;
+  border: 10px;
+  margin: auto;
+}
+
+
+/* 미디어 쿼리 (데스크톱 환경) */
+@media (min-width: 768px) {
+  .container {
+    width: 90%;
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+  }
+
+  #search-img-area {
+    padding: 10px;
+    border: 20px;
+  }
+}
+
+/* Finder */
+h1 {
   font-family: "Playfair Display", serif;
-  font-size: 60px;
-  margin-bottom: 30px;
+  font-size: 70px;
+  margin-bottom: 40px;
 }
 
-.title a {
+#home-link a {
   text-decoration: none;
   color: inherit;
 }
 
-#search-box {
-  margin-top: 20px;
-}
-
-
-#search-btn {
-  cursor: pointer;
+#top-bar {
+  margin-top: 30px;
 }
 
 #status-message {
   margin: 10px 0;
 }
 
-#result-area {
+#search-btn {
+  cursor: pointer;
+}
+
+#result-img-area {
   border: 1px solid #ccc;
-  padding: 100px;
+  padding: 50px;
+  margin: auto;
 }
 
 footer {
   font-size: 14px;
-  margin-bottom: 30px;
+  margin-top: 20px;
 }
-
-.result-info-container {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.result-info {
-  width: 20%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.result-info img {
-  max-width: 30%;
-}
-
