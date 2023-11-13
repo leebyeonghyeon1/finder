@@ -1,24 +1,17 @@
 from flask import Flask, request, jsonify, send_from_directory, url_for
 from urllib.parse import unquote
 import os
-import logging
-from werkzeug.serving import WSGIRequestHandler
-import datetime
 
-#user module
+# user module
+from logger_config import setup_logger, set_custom_request_handler
 import send_message
+import word_map
+
+word_mapping = word_map.word_mapping
 
 
-class CustomRequestHandler(WSGIRequestHandler):
-    def log_request(self, code='-', size='-'):
-        current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        self.log('info', 'Client %s - - [%s] "%s %s %s" %s %s',
-                 self.client_address[0],
-                 current_time,
-                 self.command, self.path, self.request_version,
-                 code, size)
-
-WSGIRequestHandler.log_request = CustomRequestHandler.log_request
+setup_logger() # 로그 설정 호출
+set_custom_request_handler() # 커스텀 요청 핸들러 설정 호출
 
 app = Flask(
     __name__,
@@ -26,32 +19,10 @@ app = Flask(
     static_folder=os.path.join(os.getcwd(), "static"),
 )
 
-log_file_path = os.path.join(os.getcwd(), "app.log")
 
-
-
-# 로거 객체 생성
-logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
-
-# 파일 핸들러 설정
-file_handler = logging.FileHandler(log_file_path)
-file_handler.setLevel(logging.DEBUG)
-
-# 스트림 핸들러 설정 (터미널에 출력하기 위함)
-stream_handler = logging.StreamHandler()
-stream_handler.setLevel(logging.DEBUG)
-
-# 로깅 포맷 설정
-log_format = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-
-# 파일 핸들러와 스트림 핸들러에 로깅 포맷을 적용
-file_handler.setFormatter(log_format)
-stream_handler.setFormatter(log_format)
-
-# 핸들러를 로거에 추가
-logger.addHandler(file_handler)
-logger.addHandler(stream_handler)
+# 오브젝트 검색 함수
+def find_objects(query):
+    return [item for key, item in objects.items() if query.lower() in key.lower()]
 
 
 # 루트 경로 ("/")에 대한 라우트 추가
@@ -64,14 +35,10 @@ def home():
 def send_image(filename):
     return send_from_directory("images", filename)
 
-@app.route('/output_img/<filename>')
+
+@app.route("/output_img/<filename>")
 def output_image(filename):
-    return send_from_directory('output_img', filename)
-
-
-# 오브젝트 검색 함수
-def find_objects(query):
-    return [item for key, item in objects.items() if query.lower() in key.lower()]
+    return send_from_directory("output_img", filename)
 
 
 # '/search' 경로에 대한 라우트 설정. GET 메서드를 사용합니다.
@@ -93,37 +60,13 @@ def search():
     return jsonify(success=True, results=results)
 
 
-
-@app.route("/get_all_images", methods=["GET"])
-def get_all_images():
-    image_folder = os.path.join(os.getcwd(), 'static')  # static 폴더의 절대 경로
-    image_files = [f for f in os.listdir(image_folder) if f.endswith('.jpg')]  # .jpg 파일만 선택
-    return jsonify(image_files)
-
-
-# 쿼리 번역 딕셔너리
-word_mapping = {
-    "신라면 컵" : "Shin Ramyun -cup- 65g",
-    "새우탕 컵" : "Shrimp soup noodle -cup- 67g",
-    "짜파구리 컵" : "Angry Chapaguri -cup- 108 g",
-    "쇠고기 미역국라면 컵" : "beef and seaweed soup -cup- 100g",
-    "불닭볶음면 팩" : "Hot Chicken Flavor Ramen 140g",
-    "진라면 컵" : "Jin Ramen Spicy -Cup- 65g",
-    "진라면 팩" : "Jin Ramen Spicy 120g",
-    "참깨라면 컵" : "Chamggae Ramen -cup- 65g",
-    "안성탕면 팩" : "Anseongtangmyeon -cup- 125g",
-    "짜파게티 컵" : "Chapagetti -cup- 123g"
-}
-
-
-@app.route('/process_image', methods=['POST'])
+@app.route("/process_image", methods=["POST"])
 def process_image():
     try:
         # 사용자로부터 전달받은 물품명
         data = request.get_json()
-        item_name_encoded = data.get('item_name')
+        item_name_encoded = data.get("item_name")
         print(f"인코딩: {item_name_encoded}")
-
 
         # URL 인코딩된 문자열 디코딩
         item_name = unquote(item_name_encoded)
@@ -132,16 +75,15 @@ def process_image():
         # 전달받은 물품명을 영어로 변경
         item_name = word_mapping.get(item_name, "Unknown_Item")
         print(f"영문명: {item_name}")
-        
 
         # sendmessage 함수를 사용하여 이미지 처리
         send_message.start_AI(item_name)
 
         # 처리된 이미지의 URL을 반환합니다.
-        image_url = url_for('output_image', filename='output.jpg')
+        image_url = url_for("output_image", filename="output.jpg")
         app.logger.info(f"Image processed successfully, URL: {image_url}")
         return jsonify({"image_url": image_url})
-    
+
     except Exception as e:
         app.logger.error(f"Error processing image: {str(e)}")
         return jsonify({"error": "An error occurred while processing the image."}), 500
