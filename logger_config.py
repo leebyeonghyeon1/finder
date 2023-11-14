@@ -34,13 +34,18 @@ def setup_logger():
 class CustomRequestHandler(WSGIRequestHandler):
     def log_request(self, code="-", size="-"):
         current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        client_address = getattr(self, "client_address", "Unknown")[0]
+        command = getattr(self, "command", "Unknown")
+        path = self.requestline.split()[1]  # 요청 경로 추출
+
         self.log(
             "info",
             'Client %s - - [%s] "%s %s %s" %s %s',
-            self.client_address[0],
+            client_address,
             current_time,
-            self.command,
-            self.path,
+            command,
+            path,
             self.request_version,
             code,
             size,
@@ -49,6 +54,4 @@ class CustomRequestHandler(WSGIRequestHandler):
 
 # 요청 핸들러 설정을 위한 함수
 def set_custom_request_handler():
-    WSGIRequestHandler.log_request = CustomRequestHandler.log_request.__get__(
-        CustomRequestHandler
-    )
+    WSGIRequestHandler.log_request = CustomRequestHandler.log_request
