@@ -33,22 +33,13 @@ def setup_logger():
 
 class CustomRequestHandler(WSGIRequestHandler):
     def log_request(self, code="-", size="-"):
-        current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
         client_address = getattr(self, "client_address", "Unknown")[0]
         command = getattr(self, "command", "Unknown")
         path = self.requestline.split()[1]  # 요청 경로 추출
 
         self.log(
             "info",
-            'Client %s - - [%s] "%s %s %s" %s %s',
-            client_address,
-            current_time,
-            command,
-            path,
-            self.request_version,
-            code,
-            size,
+            f' - Client "{command} {path}" {code}',
         )
 
 

@@ -10,8 +10,8 @@ import word_map
 word_mapping = word_map.word_mapping
 
 
-setup_logger() # 로그 설정 호출
-set_custom_request_handler() # 커스텀 요청 핸들러 설정 호출
+setup_logger()  # 로그 설정 호출
+set_custom_request_handler()  # 커스텀 요청 핸들러 설정 호출
 
 app = Flask(
     __name__,
