@@ -8,8 +8,9 @@
 
 #search-img-area {
   min-width: 50%;
-  max-width: 90%;
-  border: 10px;
+  max-width: 100%;
+  border: 2px;
+  padding: 2px;
   margin: auto;
   display: none;
 }
@@ -18,13 +19,13 @@
 /* 미디어 쿼리 (데스크톱 환경) */
 @media (min-width: 768px) {
   .container {
-    width: 90%;
     max-width: 1000px;
     margin: auto;
     padding: 20px;
   }
 
   #search-img-area {
+    max-width: 100%;
     padding: 10px;
     border: 20px;
     display: none;
