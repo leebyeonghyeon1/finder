@@ -47,6 +47,7 @@ export function searchObject(query) {
               .then((response) => response.json())
               .then((data) => {
                 document.getElementById("status-message").textContent = "검색 완료";
+                resultArea.style.display = 'block';
 
 
                 // 반환된 이미지 URL을 사용하여 웹 페이지에 이미지를 표시

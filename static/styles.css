@@ -27,6 +27,7 @@
   #search-img-area {
     padding: 10px;
     border: 20px;
+    display: none;
   }
 }
 
@@ -58,6 +59,7 @@ h1 {
   border: 1px solid #ccc;
   padding: 50px;
   margin: auto;
+  display: none;
 }
 
 footer {
