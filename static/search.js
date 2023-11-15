@@ -7,6 +7,7 @@ export function searchObject(query) {
   resultArea.innerHTML = "";
 
   document.getElementById("status-message").textContent = "찾고 싶은 상품 이미지를 클릭하세요.";
+  searchArea.style.display = 'block';
 
   fetch(`/search?query=${query}`)
     .then((response) => response.json())
