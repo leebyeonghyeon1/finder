@@ -1,4 +1,4 @@
-// ~ 사용자가 입력한 검색어로 오브젝트를 검색
+// : 사용자가 입력한 검색어로 오브젝트를 검색할때 쓰이는 함수
 export function searchObject(query) {
   // Clear previous search results
   const searchArea = document.getElementById("search-img-area");
@@ -7,7 +7,7 @@ export function searchObject(query) {
   resultArea.innerHTML = "";
 
   document.getElementById("status-message").textContent = "찾고 싶은 상품 이미지를 클릭하세요.";
-  searchArea.style.display = 'block';
+
 
   fetch(`/search?query=${query}`)
     .then((response) => response.json())
@@ -19,7 +19,7 @@ export function searchObject(query) {
           itemImgElm.alt = result.name;
           itemImgElm.style.maxWidth = "50%";
           itemImgElm.style.padding = "5px";
-
+          searchArea.style.display = 'block';
           searchArea.appendChild(itemImgElm);
 
           // 이미지 클릭 시 resultArea에 outputImageElement 표시
