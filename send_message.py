@@ -48,8 +48,8 @@ def  start_AI(search_query):
 
 
 def AI_model(query):
-    print("나만알쥐"+query)
-    model = YOLO("3000love.pt")
+    
+    model = YOLO("best.pt")
     #model = YOLO("yolom280.pt")
     # image_path = "/home/centos/prj/static/진라면컵.jpg"
     image_path = "/home/centos/prj/images/DB_image.jpg"
@@ -57,7 +57,7 @@ def AI_model(query):
     results = model([image_path])
 
     desired_classes = [query]
-    print("나만알쥐"+query)
+    
  
     for result in results:
         boxes = result.boxes.xyxy.numpy()
@@ -76,11 +76,11 @@ def AI_model(query):
             class_name = model.names[int(class_id)]
             if class_name in desired_classes:
                 y1, x1, y2, x2 = map(int, box[:4])
-                # x1 = orig_shape_x - x1
-                # x2 = orig_shape_x - x2
-                # y1 = orig_shape_y -y1
-                # y2 = orig_shape_y - y2
+                #x1 = orig_shape_x - x1
+                #x2 = orig_shape_x - x2
+                #y1 = orig_shape_y -y1
+                #y2 = orig_shape_y - y2
                 print(y1, x1, y2, x2)
-                cv2.rectangle(img, (y1, x1), (y2, x2), (0, 255, 0), 15)
+                cv2.rectangle(img, (y1, x1), (y2, x2), (0, 255, 0), 5)
     cv2.imwrite('/home/centos/prj/output_img/output.jpg', img)
     
